@@ -1,0 +1,25 @@
+# node
+node_modules/
+node/
+
+.vscode
+
+#intellij
+*.iml
+.idea
+*.ipr
+*.iws
+
+# other
+.DS_Store
+.dumbjump
+*classes
+*~
+*#
+.#*
+.idea
+.project
+.settings
+.tern-port
+
+.yarnclean

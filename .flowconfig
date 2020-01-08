@@ -1,0 +1,33 @@
+[version]
+0.109.0
+
+[libs]
+interfaces
+flow-typed
+
+[lints]
+all=error
+deprecated-type=warn
+deprecated-utility=warn
+dynamic-export=off
+inexact-spread=warn
+sketchy-null=warn
+unclear-type=warn
+unnecessary-optional-chain=warn
+unsafe-getters-setters=warn
+untyped-type-import=warn
+untyped-import=warn
+
+[options]
+sharedmemory.hash_table_pow=21
+max_header_tokens=10
+emoji=true
+include_warnings=false
+experimental.const_params=true
+esproposal.optional_chaining=enable
+esproposal.nullish_coalescing=enable
+esproposal.export_star_as=enable
+
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
+suppress_comment= \\(.\\|\n\\)*\\$FlowExpectError
+suppress_type=$FlowTODO
