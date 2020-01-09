@@ -17,7 +17,7 @@ module.exports = {
   projects: [
     {
       testMatch: ['<rootDir>/**/__tests__/*-test.js?(x)'],
-      displayName: 'mox',
+      displayName: 'mox src',
       rootDir: '<rootDir>/',
     },
   ],

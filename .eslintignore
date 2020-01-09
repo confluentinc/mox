@@ -2,4 +2,5 @@ node_modules/
 flow-typed/
 interfaces/
 dist/
+lib/
 !.eslintrc.js

@@ -78,6 +78,7 @@ export class MoxServer implements MoxServerI {
       this.app.disable('etag'); // prevent 304 not modified on proxy through
     }
 
+    // eslint-disable-next-line node/no-deprecated-api
     const parsedUrl = url.parse(this.targetUrl);
     const isHttps = parsedUrl.protocol === 'https:';
 

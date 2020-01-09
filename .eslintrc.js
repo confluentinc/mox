@@ -9,27 +9,32 @@ module.exports = {
     jest: true,
     node: true,
   },
-  extends: [
-    'eslint:recommended',
-    'prettier',
-    'prettier/flowtype',
-  ],
+  extends: ['eslint:recommended', 'prettier', 'prettier/flowtype', 'plugin:node/recommended'],
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [
-    'flowtype',
-    'import',
-    'prettier',
-  ],
+  plugins: ['flowtype', 'import', 'prettier', 'node'],
   settings: {
     flowtype: {
       onlyFilesWithFlowAnnotation: false,
     },
   },
   rules: {
+    'prettier/prettier': [
+      2,
+      {
+        bracketSpacing: true,
+        jsxBracketSameLine: false,
+        parser: 'flow',
+        printWidth: 100,
+        semi: true,
+        singleQuote: true,
+        tabWidth: 2,
+        trailingComma: 'es5',
+      },
+    ],
     camelcase: [2, { properties: 'never' }],
     curly: 2,
     'dot-notation': 2,
@@ -66,5 +71,6 @@ module.exports = {
       },
     ],
     'no-console': 2,
+    'node/no-unsupported-features/es-syntax': 0,
   },
 };
