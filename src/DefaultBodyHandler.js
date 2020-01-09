@@ -30,7 +30,7 @@ class DefaultBodyHandler implements BodyHandler {
     } else {
       logger.warn(
         req,
-        `WARNING: ignoring request content-type "${String(req.get('content-type'))}"`
+        `WARNING: skipping parsing for content-type "${String(req.get('content-type'))}"`
       );
     }
   }
