@@ -1,0 +1,7 @@
+// @flow
+/* eslint-disable flowtype/sort-keys */
+
+import { MoxServerI, MoxRouterI } from './types';
+
+declare export var MoxServer: Class<MoxServerI>;
+declare export var MoxRouter: Class<MoxRouterI>;

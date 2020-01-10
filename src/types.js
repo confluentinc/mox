@@ -39,6 +39,8 @@ export interface InterceptorI {
 type MoxRouterMethod = (path: string) => InterceptorI;
 
 export interface MoxRouterI {
+  constructor(options: InterceptorOptions): void;
+
   all: MoxRouterMethod;
   delete: MoxRouterMethod;
   get: MoxRouterMethod;
@@ -52,14 +54,16 @@ export interface MoxRouterI {
 export type MoxServerCfg = {
   app?: $Application<>,
   disableEtag?: boolean,
-  listenPort: number,
+  listenPort?: number,
   proxyUnmatchedRoutes?: boolean,
-  targetUrl: string,
+  targetUrl?: string,
 };
 
 export type Initializer = (Mox: MoxRouterI) => void;
 
 export interface MoxServerI {
+  constructor(cfg: MoxServerCfg): void;
+
   app: $Application<>;
   disableEtag: boolean;
   listenPort: number;
