@@ -57,8 +57,6 @@ export default class Interceptor implements InterceptorI {
    * These transformations can operate on either the inbound or outbound side of the proxy request
    */
 
-  // DOCUMENTATION:
-  // delay the request or response by time in milliseconds
   delay(time: number): Interceptor {
     const delay = (passThrough: any) => {
       return new Promise(resolve => {
@@ -73,8 +71,6 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  // DOCUMENTATION:
-  // prints information about the request or response
   log(opts: { hideHeaders: boolean } = {}): Interceptor {
     const { hideHeaders = false } = opts;
     this._transformers.push({
@@ -104,9 +100,6 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  // DOCUMENTATION:
-  // Any operations you do to the interceptor will be injected into the current transform stack
-  // use this function to add or read custom values to or from the context
   apply(
     fn: (arg: { mox: InterceptorI, req: $Request, res: $Response }) => void | Promise<void>
   ): Interceptor {
@@ -146,9 +139,6 @@ export default class Interceptor implements InterceptorI {
    * These transformations can only operate on the response. Once the engine reaches a response transform,
    * all subsequent request transforms will no-op.
    */
-
-  // DOCUMENTATION:
-  // set the status code of the response
   status(statusCode: number): Interceptor {
     this._addResTransform((body, context: Context) => {
       context.res.status(statusCode);
@@ -157,15 +147,11 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  // DOCUMENTATION:
-  // do an arbitrary transformation on the response
   mutate(mutator: (response: any) => any): Interceptor {
     this._addResTransform(body => mutator(body));
     return this;
   }
 
-  // DOCUMENTATION:
-  // explicity specify the response payload, and optionally set the estatus
   mock(response: any, statusCode?: number): Interceptor {
     this._addResTransform(
       (body, context: Context) => {
@@ -184,8 +170,6 @@ export default class Interceptor implements InterceptorI {
    * These transformations can only operate on the request. Primarily used to change the url of the request.
    */
 
-  // DOCUMENTATION:
-  // a very simple redirect that takes a string or a function
   goto(path: string | ((from: string, req: $Request) => string)): Interceptor {
     this._addReqTransform((req: $Request) => {
       const toPath = typeof path === 'function' ? path(req.url, req) : path;
@@ -195,8 +179,6 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  // DOCUMENTATION:
-  // set the base url for the request (aka which backend the request goes to)
   setBase(targetUrl: string): Interceptor {
     this._addReqTransform((req: $Request, context: Context) => {
       context.targetUrl = targetUrl;
@@ -205,13 +187,6 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  /*
-   * Other transforms
-   */
-
-  // DOCUMENTATION:
-  // does not do anything, but triggers the request
-  // You would only want to call this function if you wanted a flex transform to apply to a specific leg of the proxy
   send(): Interceptor {
     this._addResTransform(body => body);
     return this;
