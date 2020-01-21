@@ -31,9 +31,9 @@ Here's a quick example of what it takes to configure the server, perform a simpl
 import { MoxServer } from '@confluentinc/mox';
 
 const server = new MoxServer({ targetUrl: 'https://dev.server', listenPort: 3005 });
-const Mox = server.getRouter();
+const router = server.getRouter();
 
-Mox.get('/api/route-to-mock').mock({ foo: 'bar' });
+router.get('/api/route-to-mock').mock({ foo: 'bar' });
 
 server.start();
 ```

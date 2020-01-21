@@ -15,7 +15,7 @@ import {
 } from './base-transformers';
 import proxyRequest, { sendToClient } from './proxy-request';
 import { defaultBodyHandler } from './DefaultBodyHandler';
-import { type InterceptorOptions, type Handler, InterceptorI } from './types';
+import { type ActionsOptions, type Handler, ActionsI } from './types';
 
 type Context = {
   pathTokens?: {
@@ -36,11 +36,11 @@ const BaseTransformer: Class<BaseTransformerT<Context>> = BaseTransformerT;
 const ReqTransformer: Class<ReqTransformerT<Context>> = ReqTransformerT;
 const ResTransformer: Class<ResTransformerT<Context>> = ResTransformerT;
 
-export default class Interceptor implements InterceptorI {
+export default class Actions implements ActionsI {
   _transformers: Array<Transformer> = [];
-  options: InterceptorOptions;
+  options: ActionsOptions;
 
-  constructor(options: InterceptorOptions) {
+  constructor(options: ActionsOptions) {
     this.options = options;
   }
 
@@ -57,7 +57,7 @@ export default class Interceptor implements InterceptorI {
    * These transformations can operate on either the inbound or outbound side of the proxy request
    */
 
-  delay(time: number): Interceptor {
+  delay(time: number): Actions {
     const delay = (passThrough: any) => {
       return new Promise(resolve => {
         setTimeout(() => resolve(passThrough), time);
@@ -71,7 +71,7 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  log(opts: { hideHeaders: boolean } = {}): Interceptor {
+  log(opts: { hideHeaders: boolean } = {}): Actions {
     const { hideHeaders = false } = opts;
     this._transformers.push({
       triggerSend: false,
@@ -101,10 +101,10 @@ export default class Interceptor implements InterceptorI {
   }
 
   apply(
-    fn: (arg: { mox: InterceptorI, req: $Request, res: $Response }) => void | Promise<void>
-  ): Interceptor {
+    fn: (arg: { mox: ActionsI, req: $Request, res: $Response }) => void | Promise<void>
+  ): Actions {
     const execute = async (passThrough: any, ctx: Context) => {
-      const mox = new Interceptor(this.options);
+      const mox = new Actions(this.options);
       const { req, res } = ctx;
       await fn({ mox, req, res });
       ctx.transformStack.unshift(...mox._transformers);
@@ -118,7 +118,7 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  req(fn: (req: $Request) => void): Interceptor {
+  req(fn: (req: $Request) => void): Actions {
     this._addReqTransform(req => {
       fn(req);
       return req;
@@ -126,7 +126,7 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  res(fn: (res: $Response) => void): Interceptor {
+  res(fn: (res: $Response) => void): Actions {
     this._addResTransform((body, ctx) => {
       fn(ctx.res);
       return body;
@@ -139,7 +139,7 @@ export default class Interceptor implements InterceptorI {
    * These transformations can only operate on the response. Once the engine reaches a response transform,
    * all subsequent request transforms will no-op.
    */
-  status(statusCode: number): Interceptor {
+  status(statusCode: number): Actions {
     this._addResTransform((body, context: Context) => {
       context.res.status(statusCode);
       return body;
@@ -147,12 +147,12 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  mutate(mutator: (response: any) => any): Interceptor {
+  mutate(mutator: (response: any) => any): Actions {
     this._addResTransform(body => mutator(body));
     return this;
   }
 
-  mock(response: any, statusCode?: number): Interceptor {
+  mock(response: any, statusCode?: number): Actions {
     this._addResTransform(
       (body, context: Context) => {
         if (typeof statusCode === 'number') {
@@ -170,7 +170,7 @@ export default class Interceptor implements InterceptorI {
    * These transformations can only operate on the request. Primarily used to change the url of the request.
    */
 
-  goto(path: string | ((from: string, req: $Request) => string)): Interceptor {
+  goto(path: string | ((from: string, req: $Request) => string)): Actions {
     this._addReqTransform((req: $Request) => {
       const toPath = typeof path === 'function' ? path(req.url, req) : path;
       req.url = toPath;
@@ -179,7 +179,7 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  setBase(targetUrl: string): Interceptor {
+  setBase(targetUrl: string): Actions {
     this._addReqTransform((req: $Request, context: Context) => {
       context.targetUrl = targetUrl;
       return req;
@@ -187,7 +187,7 @@ export default class Interceptor implements InterceptorI {
     return this;
   }
 
-  send(): Interceptor {
+  send(): Actions {
     this._addResTransform(body => body);
     return this;
   }

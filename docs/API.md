@@ -86,7 +86,7 @@ The param `url` should match the API route(s) that subsequent `actions` will mod
 
 ## Actions
 
-Mox API Objects (let's call them `Mox` for short) are returned by the routing method calls from `MoxRouter`. They can be chained with different actions.
+Actions API objects (`Actions` for short) are returned by method calls from `MoxRouter`. They can be chained with different actions.
 
 ```javascript
 MoxRouter.get('/api/url/1')
@@ -102,7 +102,7 @@ Actions can affect the response or the request leg of a proxied request. Some ca
 
 In a chain of actions, these actions should be called before response actions.
 
-- #### `.goto(string | Function)` => `Mox`
+- #### `.goto(string | Function)` => `Actions`
 
   This action redirects incoming requests. If a string is provided, the request will be redirected to the given URL. Example:
 
@@ -118,7 +118,7 @@ In a chain of actions, these actions should be called before response actions.
   });
   ```
 
-- #### `.setBase(string)` => `Mox`
+- #### `.setBase(string)` => `Actions`
 
   This action is like `goto` but instead sets base url. Instead of specifying the endpoint like `/api/route`, this action can redirect to different domains. Example:
 
@@ -126,17 +126,17 @@ In a chain of actions, these actions should be called before response actions.
   MoxRouter.get('/api/route/*').setBase('https://dev.server2');
   ```
 
-- #### `.send()` => `Mox`
+- #### `.send()` => `Actions`
 
   This does not do anything, but it triggers the request, meaning any further actions will affect the response leg of the network request. This is only useful if you want a generic action to apply specifically to the response leg. This method is not necessary to use other actions!
 
 ### Response Actions
 
-- #### `.status(statusCode: number)` => `Mox`
+- #### `.status(statusCode: number)` => `Actions`
 
   This action sets the status code of the response.
 
-- #### `.mock(value, [statusCode: number])` => `Mox`
+- #### `.mock(value, [statusCode: number])` => `Actions`
 
   This is a simple action that sets the response body and optionally sets the status code for the response. Example:
 
@@ -144,7 +144,7 @@ In a chain of actions, these actions should be called before response actions.
   MoxRouter.get('/api/object').mock({ foo: 7 });
   ```
 
-- #### `.mutate(fn: Function)` => `Mox`
+- #### `.mutate(fn: Function)` => `Actions`
 
   This action allows programmatic modification of the response payload. `fn` has the signature `(response: any) => any`. Example:
 
@@ -159,23 +159,23 @@ In a chain of actions, these actions should be called before response actions.
 
 ### Generic Actions
 
-- #### `.delay(time: number)` => `Mox`
+- #### `.delay(time: number)` => `Actions`
 
   Delay the request or response by the specified duration in milliseconds.
 
-- #### `.log([options])` => `Mox`
+- #### `.log([options])` => `Actions`
 
-  This action prints out debugging information for each request coming into the matched route. If the action is applied during the response leg of the proxied network request, response information will be printed instead. `options` is an object that currently only has 1 field:
+  This action prints out debugging information for each request coming into the matched route. If the action is applied during the response leg of the proxied network request, response information will be printed instead. `options` is an object that currently supports 1 config:
 
   - `hideHeaders` : `boolean` [optional]
 
     This hides the headers of the request or response. Defaults to `false`.
 
-- #### `.apply(fn: Function)` => `Mox`
+- #### `.apply(fn: Function)` => `Actions`
 
   This is a powerful action that allows dynamically applied actions during the handling of a request/response. This is useful for conditionally applying actions.
 
-  `fn` has the signature `({ mox: Mox, req: $Request, res: $Response }) => void | Promise<void>`
+  `fn` has the signature `({ mox: Actions, req: $Request, res: $Response }) => void | Promise<void>`
 
    Any actions called on `mox` will be only applied for the current request/response, and will be applied immediately after the current `.apply` call.
 
@@ -191,14 +191,14 @@ In a chain of actions, these actions should be called before response actions.
 
   In the above example, each request that matches `/api/*` will be conditionally redirected to `/api/baz` and then mutated.
 
-  If `fn` returns a promise, `Mox` will wait for the promise before continuing with the request/response.
+  If `fn` returns a promise, `Actions` will wait for the promise before continuing with the request/response.
 
   Note: `req.body` allows you to access the request body, if it exists.
 
-- #### `.req(fn: Function)` => `Mox`
+- #### `.req(fn: Function)` => `Actions`
 
   `fn` has the signature `(req: $Request) => void`. This action allows arbitrary manipulation of the `express` `req` object. This is equivalent to calling `.apply` and only using the `req` object.
 
-- #### `.res(fn: Function)` => `Mox`
+- #### `.res(fn: Function)` => `Actions`
 
   Similar to the `.res` action, but applied to the response. `fn` has the signature `(res: $Request) => void`.

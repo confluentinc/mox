@@ -3,21 +3,21 @@
 import type { $Request, $Response } from 'express';
 import { once } from 'lodash';
 
-import Interceptor from './Interceptor';
-import { MoxRouterI, type InterceptorOptions, type Handler } from './types';
+import Actions from './Actions';
+import { MoxRouterI, type ActionsOptions, type Handler } from './types';
 
 export class MoxRouter implements MoxRouterI {
-  _options: InterceptorOptions;
+  _options: ActionsOptions;
 
   _applyMox(path: string, expressMethod: (path: string, handler: Handler) => any) {
-    const interceptor = new Interceptor(this._options);
-    const compileOnce = once(() => interceptor.compile());
+    const actions = new Actions(this._options);
+    const compileOnce = once(() => actions.compile());
     expressMethod.call(this._options.app, path, (req: $Request, res: $Response, next) => {
       const handler = compileOnce();
       handler(req, res, next);
     });
 
-    return interceptor;
+    return actions;
   }
 
   all = (path: string) => {
@@ -52,7 +52,7 @@ export class MoxRouter implements MoxRouterI {
     return this._applyMox(path, this._options.app.options);
   };
 
-  constructor(options: InterceptorOptions) {
+  constructor(options: ActionsOptions) {
     this._options = options;
   }
 }

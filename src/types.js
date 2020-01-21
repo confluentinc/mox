@@ -9,37 +9,37 @@ import stream from 'stream';
 import request from 'request';
 import type { $Application, $Request, $Response, NextFunction } from 'express';
 
-export type InterceptorOptions = {
+export type ActionsOptions = {
   app: $Application<>,
   proxy: ProxyHandler,
   targetUrl: string,
 };
 
-export interface InterceptorI {
+export interface ActionsI {
   // flex transforms
   apply(
-    fn: (arg: { mox: InterceptorI, req: $Request, res: $Response }) => void | Promise<void>
-  ): InterceptorI;
-  delay(time: number): InterceptorI;
-  log(opts?: { hideHeaders: boolean }): InterceptorI;
+    fn: (arg: { mox: ActionsI, req: $Request, res: $Response }) => void | Promise<void>
+  ): ActionsI;
+  delay(time: number): ActionsI;
+  log(opts?: { hideHeaders: boolean }): ActionsI;
 
   // req transforms
-  req(fn: (req: $Request) => void): InterceptorI;
-  goto(path: string | ((from: string, req: $Request) => string)): InterceptorI;
-  setBase(targetUrl: string): InterceptorI;
-  send(): InterceptorI;
+  req(fn: (req: $Request) => void): ActionsI;
+  goto(path: string | ((from: string, req: $Request) => string)): ActionsI;
+  setBase(targetUrl: string): ActionsI;
+  send(): ActionsI;
 
   // res transforms
-  res(fn: (res: $Response) => void): InterceptorI;
-  status(statusCode: number): InterceptorI;
-  mutate(mutator: (response: any) => any): InterceptorI;
-  mock(response: any, statusCode?: number): InterceptorI;
+  res(fn: (res: $Response) => void): ActionsI;
+  status(statusCode: number): ActionsI;
+  mutate(mutator: (response: any) => any): ActionsI;
+  mock(response: any, statusCode?: number): ActionsI;
 }
 
-type MoxRouterMethod = (path: string) => InterceptorI;
+type MoxRouterMethod = (path: string) => ActionsI;
 
 export interface MoxRouterI {
-  constructor(options: InterceptorOptions): void;
+  constructor(options: ActionsOptions): void;
 
   all: MoxRouterMethod;
   delete: MoxRouterMethod;
