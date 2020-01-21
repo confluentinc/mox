@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "hybrid proxy and mock server",
   "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/confluentinc/mox.git"
+  },
   "main": "lib/index.js",
   "module": "lib/index.js",
   "files": [
@@ -16,7 +20,7 @@
     "clean": "rm -rf lib",
     "copy-flow": "cp src/index.js.flow lib/index.js.flow && cp src/types.js lib/types.js.flow",
     "build": "yarn clean && babel src/ -d lib && yarn copy-flow",
-    "make-package": "yarn verify && yarn build && yarn pack"
+    "package-mox": "yarn verify && yarn build && yarn pack"
   },
   "eslintConfig": {
     "globals": {
