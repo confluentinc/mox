@@ -1,5 +1,6 @@
 # build
 lib/
+*.tgz
 
 # node
 node_modules/

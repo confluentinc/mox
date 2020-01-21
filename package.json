@@ -12,7 +12,7 @@
     "flow": "flow",
     "lint": "eslint . --report-unused-disable-directives --ext .jsx,.js",
     "jest": "env TZ='America/Los_Angeles' jest",
-    "verify": "yarn flow; yarn lint; yarn test src",
+    "verify": "yarn flow; yarn lint; yarn jest src",
     "clean": "rm -rf lib",
     "copy-flow": "cp src/index.js.flow lib/index.js.flow && cp src/types.js lib/types.js.flow",
     "build": "yarn clean && babel src/ -d lib && yarn copy-flow"
