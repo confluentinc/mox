@@ -2,6 +2,8 @@
 
 A [node.js](https://nodejs.org/en/) developer tool written on top of [express.js](https://expressjs.com/). Mox is a cross between a mock and a proxy server.
 
+See here for the [NPM package](https://www.npmjs.com/package/@confluentinc/mox)
+
 ## Why this exists
 
 Mox's purpose is to bridge the gap between mock server usage and live backend usage. Frontend development processes typically fall into one of two camps:
