@@ -32,7 +32,7 @@ export interface ActionsI {
   // res transforms
   res(fn: (res: $Response) => void): ActionsI;
   status(statusCode: number): ActionsI;
-  mutate(mutator: (response: any) => any): ActionsI;
+  mutate(mutator: (response: any, context: { req: $Request, res: $Response }) => any): ActionsI;
   mock(response: any, statusCode?: number): ActionsI;
 }
 

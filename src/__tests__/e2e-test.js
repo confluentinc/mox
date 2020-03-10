@@ -109,13 +109,20 @@ describe('Mox', () => {
     });
 
     test('mutate', async () => {
-      Mox.get(`/${ver}/object`).mutate(val => ({ ...val, extra: 'this is extra' }));
+      Mox.get(`/${ver}/object`).mutate((val, { req, res }) => ({
+        ...val,
+        extra: 'this is extra',
+        hasReq: !!req,
+        hasResp: !!res,
+      }));
       const { body } = await simpleRequest(`/${ver}/object`);
       expect(JSON.parse(body)).toEqual({
         id: 'zxcv',
         name: 'Bob',
         location: 'Palo Alto, CA',
         extra: 'this is extra',
+        hasReq: true,
+        hasResp: true,
       });
     });
 

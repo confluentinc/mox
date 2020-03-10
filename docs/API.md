@@ -146,7 +146,7 @@ In a chain of actions, these actions should be called before response actions.
 
 - #### `.mutate(fn: Function)` => `Actions`
 
-  This action allows programmatic modification of the response payload. `fn` has the signature `(response: any) => any`. Example:
+  This action allows programmatic modification of the response payload. `fn` has the signature `(response: any, context: { req: $Request, res: $Response }) => any`. Example:
 
   ```javascript
   MoxRouter.get('/api/object').mutate(obj => {

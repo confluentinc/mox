@@ -147,8 +147,8 @@ export default class Actions implements ActionsI {
     return this;
   }
 
-  mutate(mutator: (response: any) => any): Actions {
-    this._addResTransform(body => mutator(body));
+  mutate(mutator: (response: any, context: { req: $Request, res: $Response }) => any): Actions {
+    this._addResTransform((body, { req, res }: Context) => mutator(body, { req, res }));
     return this;
   }
 
