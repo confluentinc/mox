@@ -18,9 +18,6 @@ import { defaultBodyHandler } from './DefaultBodyHandler';
 import { type ActionsOptions, type Handler, ActionsI } from './types';
 
 type Context = {
-  pathTokens?: {
-    [string]: string,
-  },
   req: $Request,
   res: $Response,
   targetUrl: string,
