@@ -1,11 +1,11 @@
 {
   "name": "@confluentinc/mox",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "hybrid proxy and mock server",
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/confluentinc/mox.git"
+    "type": "git",
+    "url": "https://github.com/confluentinc/mox.git"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
