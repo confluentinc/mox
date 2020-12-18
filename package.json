@@ -1,6 +1,6 @@
 {
   "name": "@confluentinc/mox",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "hybrid proxy and mock server",
   "license": "MIT",
   "repository": {
