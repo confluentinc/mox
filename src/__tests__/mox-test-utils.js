@@ -4,8 +4,9 @@ import http from 'http';
 
 import request from 'request';
 
-export const getRequest = (targetUrl: string, url: string) => {
-  return new Promise<{ body: any, response: http.IncomingMessage }>((resolve, reject) => {
+type RequestType = { body: any, response: http.IncomingMessage };
+export const getRequest = (targetUrl: string, url: string): Promise<RequestType> => {
+  return new Promise<RequestType>((resolve, reject) => {
     request({ method: 'GET', url: `${targetUrl}${url}` }, (error, response, body) => {
       if (error) {
         reject(error);
@@ -21,8 +22,8 @@ export const postRequest = (
   url: string,
   postBody: mixed,
   contentType: string
-) => {
-  return new Promise<{ body: any, response: http.IncomingMessage }>((resolve, reject) => {
+): Promise<RequestType> => {
+  return new Promise<RequestType>((resolve, reject) => {
     request(
       {
         method: 'POST',

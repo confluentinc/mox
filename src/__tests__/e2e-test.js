@@ -13,13 +13,13 @@ const PROXY_BASE = `http://localhost:${PROXY_PORT}`;
 
 const utils = require('../utils');
 
-// $FlowExpectError
+// $FlowExpectedError
 utils.rawLogger = {
   log: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
 };
-// $FlowExpectError
+// $FlowExpectedError
 utils.logger = {
   log: jest.fn(),
   error: jest.fn(),

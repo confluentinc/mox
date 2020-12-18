@@ -7,7 +7,10 @@ import type { $Application, $Request, $Response } from 'express';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-export const initTestServer = (port: number = 3100, name: string = 'default_server') => {
+export const initTestServer = (
+  port: number = 3100,
+  name: string = 'default_server'
+): Promise<http.Server> => {
   return new Promise<http.Server>(resolve => {
     const app: $Application<> = express();
 

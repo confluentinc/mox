@@ -22,7 +22,7 @@ const validRequestBody = (req: $Request) => {
 
 // this is a class to make body handling logic extensible if we want to do that
 class DefaultBodyHandler implements BodyHandler {
-  async parseInitialRequestBody(req: $Request) {
+  async parseInitialRequestBody(req: $Request): Promise<void> {
     if (req.is('application/json')) {
       return await new Promise(resolve => bodyParser.json()(req, null, resolve));
     } else if (req.is('text/*')) {
@@ -35,7 +35,7 @@ class DefaultBodyHandler implements BodyHandler {
     }
   }
 
-  restreamInitialRequestBody(req: $Request) {
+  restreamInitialRequestBody(req: $Request): * {
     if (validRequestBody(req)) {
       const content: string =
         typeof req.body === 'string' ? req.body : JSON.stringify(req.body) ?? '';
@@ -46,7 +46,7 @@ class DefaultBodyHandler implements BodyHandler {
     }
   }
 
-  serializeRequestBody(req: $Request) {
+  serializeRequestBody(req: $Request): ?string {
     const useBody = validRequestBody(req);
     if (!useBody) {
       return undefined;
@@ -54,7 +54,7 @@ class DefaultBodyHandler implements BodyHandler {
     return typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
   }
 
-  parseInterceptedResponseBody(body: any, response: request.Response) {
+  parseInterceptedResponseBody(body: any, response: typeof request.Response): string | any {
     if (typeof body === 'string') {
       try {
         const isJsonType =
@@ -70,4 +70,4 @@ class DefaultBodyHandler implements BodyHandler {
   }
 }
 
-export const defaultBodyHandler = new DefaultBodyHandler();
+export const defaultBodyHandler: DefaultBodyHandler = new DefaultBodyHandler();

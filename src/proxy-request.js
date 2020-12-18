@@ -10,7 +10,7 @@ import { logger } from './utils';
 
 type ManualProxyInfo = {
   body: any,
-  response: request.Response,
+  response: typeof request.Response,
 };
 
 const processProxyResponse = async (
