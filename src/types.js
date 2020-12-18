@@ -36,7 +36,7 @@ export interface ActionsI {
   mock(response: any, statusCode?: number): ActionsI;
 }
 
-type MoxRouterMethod = (path: string) => ActionsI;
+export type MoxRouterMethod = (path: string) => ActionsI;
 
 export interface MoxRouterI {
   constructor(options: ActionsOptions): void;
@@ -84,5 +84,5 @@ export interface BodyHandler {
   parseInitialRequestBody(req: $Request): Awaitable<void>;
   restreamInitialRequestBody(req: $Request): Awaitable<?stream.Readable>;
   serializeRequestBody(req: $Request): Awaitable<?string>;
-  parseInterceptedResponseBody(body: any, response: request.Response): Awaitable<?any>;
+  parseInterceptedResponseBody(body: any, response: typeof request.Response): Awaitable<?any>;
 }

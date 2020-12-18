@@ -23,7 +23,7 @@ export class MoxServer implements MoxServerI {
   disableEtag: boolean;
 
   _moxRouter: MoxRouter;
-  _apiProxy: httpProxy;
+  _apiProxy: typeof httpProxy;
 
   constructor(cfg: MoxServerCfg = {}) {
     this.app = cfg.app ?? express();
@@ -59,7 +59,7 @@ export class MoxServer implements MoxServerI {
     return this._moxRouter;
   }
 
-  async start(initialize?: Initializer) {
+  async start(initialize?: Initializer): * {
     if (typeof initialize === 'function') {
       initialize(this.getRouter());
     }
